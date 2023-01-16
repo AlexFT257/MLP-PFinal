@@ -19,16 +19,16 @@ public class App {
         // net = MultiLayerPerceptron.load("net.obj");
         // si no existe la red, la creamos
         // if (net == null) {
-            // definimos la red
-            // TODO: ver si es necesario cambiar el numero de neuronas en las capas
-            int[] layers = { 783, 256, 2 };
-            net = new MultiLayerPerceptron(layers, 1);
-            for (Layer capa : net.getCapas()) {
-                for (int i = 0; i < capa.layerSize(); i++) {
-                    // TODO: buscar una funcion de transferencia que se adapte mejor al problema
-                    capa.getNeuron(i).setFuncionTransferencia(new Sigmoidal());
-                }
+        // definimos la red
+        // TODO: ver si es necesario cambiar el numero de neuronas en las capas
+        int[] layers = { 784, 256, 10 };
+        net = new MultiLayerPerceptron(layers, 1);
+        for (Layer capa : net.getCapas()) {
+            for (int i = 0; i < capa.layerSize(); i++) {
+                // TODO: buscar una funcion de transferencia que se adapte mejor al problema
+                capa.getNeuron(i).setFuncionTransferencia(new ReLU());
             }
+        }
         // }
 
         /* Entrenamiento */
@@ -102,13 +102,17 @@ public class App {
                 String[] values = aux.split(";");
                 // Cada linea tiene 785 valores, los primeros 784 son los valores de la imagen
                 // y el ultimo representa el numero que representa la imagen
+
                 if (values.length == 785) {
                     ArrayList<Double> inputs = new ArrayList<>();
-                    for (int i = 0; i < 783; i++) {
+                    for (int i = 0; i < 784; i++) {
+
                         double x = Double.parseDouble(values[i]);
                         inputs.add(x);
+                        // System.out.println("i: " + i+ " valor: " + x);
                     }
                     ArrayList<Double> output = new ArrayList<>();
+                    // System.out.println("Valor esperado: " + values[784]);
                     double x = Double.parseDouble(values[784]);
                     output.add(x);
                     orderedEntradas.add(new Entrada(inputs, output));
